@@ -94,7 +94,7 @@ function handleClick(button){
         toggleEndgameModal(); // Display pop up window
         return
     }else{
-        updateScore(playRound(button.textContent,computerPlay())); // Play round then update the score
+        updateScore(playRound(button.getAttribute('id'),computerPlay())); // Play round then update the score
         if(playerScore === 5 || computerScore === 5){ // Check if there is a winner with the new score
             toggleEndgameModal();// Display popup window
             playerScore > computerScore? (endgameMsg.textContent = 'You won!'): (endgameMsg.textContent = 'You lost...');
