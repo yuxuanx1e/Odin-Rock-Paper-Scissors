@@ -1,85 +1,110 @@
+//================================= Function Declarations =====================================
 // Randomly chooses between Rock, Paper and Scissors
 function computerPlay (){
     let choice = Math.floor(Math.random()*3);
     switch(choice){
         case 0:
-            return "rock";
+            return "Rock";
         case 1:
-            return "paper";
+            return "Paper";
         default:
-            return "scissors";
+            return "Scissors";
     }
 }
 
-// Determines the result of a round
+// Determines the result of a single round and display on screen
 function playRound(playerSelection,computerSelection){
 
-    playerSelection = playerSelection.toLowerCase();
-    computerSelection = computerSelection.toLowerCase();
+    let msg =''; // Initialise msg to be displayed on screen
 
 
     if(playerSelection===computerSelection){
-        return "It's a draw.";
+        msg= "It's a draw!:"+playerSelection+" ties with "+computerSelection;
 
     }else{
         switch(playerSelection){
-            case "rock":
-                if(computerSelection==="scissors"){
-                    return "You Win! Rock beats Scissors"
+            case "Rock": // Player selected rock
+                if(computerSelection==="Scissors"){
+                    msg= "You Won!:Rock beats Scissors"; // ":" is added for string split method
                 }else{
-                    return "You Lose! Paper beats Rock"
+                    msg= "You Lost!:Paper beats Rock";
                 }
-            case "paper":
-                if(computerSelection==="rock"){
-                    return "You Win! Paper beats Rock"
+                break; // Break from switch statement
+
+            case "Paper":  // Player selected paper
+                if(computerSelection==="Rock"){
+                    msg ="You Won!:Paper beats Rock";
                 }else{
-                    return "You Lose! Scissors beats Paper"
+                    msg = "You Lost!:Scissors beats Paper";
                 }
-            case "scissors":
-                if(computerSelection==="paper"){
-                    return "You Win! Scissors beats Paper"
+                break;
+
+            case "Scissors":  // Player selected scissors
+                if(computerSelection==="Paper"){
+                    msg= "You Won!:Scissors beats Paper";
                 }else{
-                    return "You Lose! Rock beats Scissors"
+                    msg= "You Lost!:Rock beats Scissors";
                 }
-            default:
-                return "Something went wrong. Make sure your spelling is correct!"
+                break;
         }
     }
+    const msgArray= msg.split(":"); // Split string into two
+    onScreenTextLarge.textContent=msgArray[0]; // Large text
+    onScreenTextSmall.textContent=msgArray[1]; // Small text
+    return msg;
+
 }
 
-// Play for 5 rounds
-function game(){
-    let playerSelection;
-    let computerSelection;
-    let playScore=0;
-    let computerScore=0;
+// Update the current running score based on the string returned by playRound function
+function updateScore(result){
 
-    for(let i =0; i<5; i++){
-        playerSelection=window.prompt("Choose Rock, Paper or Scissors");
-        computerSelection=computerPlay();
-
-        result=playRound(playerSelection,computerSelection);
-
-        if(result.charAt(4)==="W"){
-            playScore++;
-        }else if(result.charAt(4)==="L"){
-            computerScore++;
-        }
+    if(result.charAt(4)==="W"){ // Player Wins
+        playScore++;
+    }else if(result.charAt(4)==="L"){ // Player Loses
+        computerScore++;
     }
 
-    let finalScore = playScore + ":" + computerScore;
-    
-    if(playScore>computerScore){
-        return "You win! You beat the Computer with a final score of "+finalScore;
-    }else if(playScore<computerScore){
-        return "You Lose! The Computer beats you with a final score of " +finalScore;
-    }else{
-        return "It's a tie! Score: " + finalScore;
+    // Update scoreboard
+    scoreBoardPlayer.textContent="Player: " +playScore;
+    scoreBoardComputer.textContent="Computer: "+computerScore;
+
+    if(computerScore==5){
+        alert("You Lost!");
+    }else if(playScore==5){
+        alert("You Won!");
     }
 
 }
 
-console.log(game());
-//const playerSelection = "rock";
-//const computerSelection = computerPlay();
-//console.log(playRound(playerSelection,computerSelection));
+
+//====================================== Main =================================================
+let playScore=0;        // Initialise player score
+let computerScore=0;    // Initialise computer score
+
+// Select existing elements in DOM
+const displayElem = document.querySelector('.display'); // Select the div element for displaying msg and score
+const buttons = document.querySelectorAll('button'); // Select all three buttons
+
+// Create div elements on the page to display initial msg/result of each round and current score
+const onScreenTextLarge = document.createElement('h1');
+const onScreenTextSmall = document.createElement('h2');
+const scoreBoardPlayer = document.createElement('div'); 
+const scoreBoardComputer = document.createElement('div'); 
+
+// Initialise display message and score
+onScreenTextLarge.textContent="Choose Your Weapon"; // Large Text
+onScreenTextSmall.textContent="First to score 5 points wins the game"; // Small Text
+updateScore(''); // Initialsie scoreboard
+
+// On each button click
+buttons.forEach(button=>button.addEventListener('click',function(){
+    updateScore(playRound(button.textContent,computerPlay())); // Play round then update the score
+}));
+
+// Append elements to DOM
+displayElem.appendChild(onScreenTextLarge);
+displayElem.appendChild(onScreenTextSmall);
+displayElem.appendChild(scoreBoardPlayer);
+displayElem.appendChild(scoreBoardComputer);
+
+
