@@ -1,4 +1,4 @@
-# Odin Rock-Paper-Scissors
+# Odin Rock Paper Scissors
 
 Rock Papaer Scissors game created with HTML, CSS and JS. An exercise from The Odin Project (TOP) [Foundations course](https://www.theodinproject.com/paths/foundations/courses/foundations).
 
