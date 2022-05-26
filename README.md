@@ -1,4 +1,4 @@
-# Odin-Rock-Paper-Scissors
+# Odin Rock-Paper-Scissors
 
 Rock Papaer Scissors game created with HTML, CSS and JS.
 
